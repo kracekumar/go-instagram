@@ -54,10 +54,10 @@ func (i Instagram) Authenticate(redirect_uri, scope string) *http.Response {
 	// Add clientid, redirect_uri, response_type=code as request paramateres
 	if scope != "" {
 		resp, err := i.client.PostForm(u.String(), url.Values{"client_id": {i.ClientId}, "redirect_uri": {i.RedirectURI},
-			"response_type": "code", "scope": {scope}})
+			"response_type": {"code"}, "scope": {scope}})
 	} else {
 		resp, err := i.client.PostForm(u.String(), url.Values{"client_id": {i.ClientId}, "redirect_uri": {i.RedirectURI},
-			"response_type": "code"})
+			"response_type": {"code"}})
 	}
 	check_error(err)
 	return resp
