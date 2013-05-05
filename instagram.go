@@ -55,7 +55,7 @@ func (i Instagram) Authenticate(redirect_uri, scope string) {
 	q.Set("client_id", i.ClientId)
 	q.Set("redirect_uri", i.RedirectURI)
 	q.Set("response_type", "code")
-	if scope != nil {
+	if scope != "" {
 		q.Set("scope", scope)
 	}
 	u.RawQuery = q.Encode()
