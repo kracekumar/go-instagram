@@ -84,6 +84,7 @@ func (i Instagram) Authenticate(redirect_url, scope string) string {
 	i.OauthConfig.AuthURL = AUTHORIZATION_URL
 	i.OauthConfig.TokenURL = ACCESS_URL
 	i.OauthConfig.RedirectURL = redirect_url
+	i.OauthConfig.Scope = scope
 	return i.OauthConfig.AuthCodeURL("")
 	//i.OauthConfig.AuthCodeURL("")
 }
