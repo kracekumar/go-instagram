@@ -16,7 +16,8 @@ func hello(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Fprintf(w, string(rbody))
+	log.Println(rbody, resp.Request, resp.StatusCode)
+	fmt.Fprintf(w, "%s", string(rbody))
 }
 
 func RedirectHandler(w http.ResponseWriter, r *http.Request) {
@@ -26,7 +27,7 @@ func RedirectHandler(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 	log.Println(rbody)
-	fmt.Fprintf(w, string(rbody))
+	fmt.Fprintf(w, "%s", string(rbody))
 }
 
 func main() {
