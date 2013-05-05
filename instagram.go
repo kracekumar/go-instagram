@@ -83,6 +83,7 @@ func (i Instagram) Authenticate(redirect_uri, scope string) {
 	}
 	check_error(err)
 	log.Println(resp)
+	i.resolve_redirect(resp)
 }
 
 func (i Instagram) GetAccessToken(code string) *http.Response {
