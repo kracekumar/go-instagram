@@ -59,7 +59,7 @@ func (i Instagram) Authenticate(redirect_uri, scope string) *http.Response {
 		q.Set("scope", scope)
 	}
 	u.RawQuery = q.Encode()
-	resp, err := i.client.Post(u.String())
+	resp, err := i.client.PostForm(u.String())
 	check_error(err)
 	return resp
 }
