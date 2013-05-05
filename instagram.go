@@ -44,18 +44,16 @@ func NewInstagram(client_id, client_secret string) *Instagram {
 }
 
 func (i Instagram) Authenticate(redirect_uri, scope string) *http.Response {
-	u, err := url.Parse(redirect_uri)
-	check_error(err)
 	i.RedirectURI = redirect_uri
 	//first step: Direct user to Instagram authorization URL
 	instagram_url, err := url.Parse(AUTHORIZATION_URL)
 	check_error(err)
 	var resp *http.Response
 	if scope != "" {
-		resp, err = i.client.PostForm(u.String(), url.Values{"client_id": {i.ClientId}, "redirect_uri": {i.RedirectURI},
+		resp, err = i.client.PostForm(instagram_url.String(), url.Values{"client_id": {i.ClientId}, "redirect_uri": {i.RedirectURI},
 			"response_type": {"code"}, "scope": {scope}})
 	} else {
-		resp, err = i.client.PostForm(u.String(), url.Values{"client_id": {i.ClientId}, "redirect_uri": {i.RedirectURI},
+		resp, err = i.client.PostForm(instagram_url.String(), url.Values{"client_id": {i.ClientId}, "redirect_uri": {i.RedirectURI},
 			"response_type": {"code"}})
 	}
 	check_error(err)
