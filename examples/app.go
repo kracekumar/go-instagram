@@ -15,12 +15,12 @@ func hello(w http.ResponseWriter, r *http.Request) {
 }
 
 func RedirectHandler(w http.ResponseWriter, r *http.Request) {
-	log.Println(r.FormValue("code"))
+	log.Println("inside redirect")
 	rbody, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println(rbody)
+	log.Println(string(rbody))
 	fmt.Fprintf(w, "%s", string(rbody))
 }
 

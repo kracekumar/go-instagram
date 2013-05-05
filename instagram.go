@@ -13,6 +13,8 @@ import (
 const (
 	AUTHORIZATION_URL = "https://api.instagram.com/oauth/authorize"
 	ACCESS_URL        = "https://api.instagram.com/oauth/access_token"
+	REDIRECT_LIMIT    = 30
+	REDIRECT_CODES    = []int{301, 302, 303, 307}
 )
 
 type Jar struct {
@@ -32,6 +34,23 @@ func check_error(err error) {
 	if err != nil {
 		log.Fatal(err)
 		panic(err)
+	}
+}
+
+func (i Instagram) resolve_redirect(resp) *http.Response(){
+	for count:= 0; count < REDIRECT_LIMIT; count++{
+		if resp.StatusCode == 200 || resp.StatusCode >= 400 {
+			return resp
+		} else {
+			for code := range REDIRECT_CODES{
+				if code == resp.StatusCode{
+					location := resp.Headers['location']
+					method := resp.Method
+					log.Println(resp)
+				}
+			}
+			
+		}
 	}
 }
 
