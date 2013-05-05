@@ -43,7 +43,7 @@ func NewInstagram(client_id, client_secret string) *Instagram {
 	return i
 }
 
-func (i Instagram) Authenticate(redirect_uri, scope string) *http.Response {
+func (i Instagram) Authenticate(redirect_uri, scope string) {
 	i.RedirectURI = redirect_uri
 	//first step: Direct user to Instagram authorization URL
 	instagram_url, err := url.Parse(AUTHORIZATION_URL)
@@ -57,7 +57,7 @@ func (i Instagram) Authenticate(redirect_uri, scope string) *http.Response {
 			"response_type": {"code"}})
 	}
 	check_error(err)
-	return resp
+	log.Println(resp)
 }
 
 func (i Instagram) GetAccessToken(code string) *http.Response {

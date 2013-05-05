@@ -11,13 +11,7 @@ import (
 
 func hello(w http.ResponseWriter, r *http.Request) {
 	i := instagram.NewInstagram(CLIENT_ID, CLIENT_SECRET)
-	resp := i.Authenticate(REDIRECT_URL, "") //PAss empty scope
-	rbody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Println(rbody, resp.Request, resp.StatusCode)
-	fmt.Fprintf(w, "%s", string(rbody))
+	i.Authenticate(REDIRECT_URL, "") //PAss empty scope
 }
 
 func RedirectHandler(w http.ResponseWriter, r *http.Request) {
