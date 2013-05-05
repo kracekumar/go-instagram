@@ -44,6 +44,7 @@ func (i Instagram) resolve_redirect(resp *http.Response) *http.Response {
 			return resp
 		} else {
 			for code := range REDIRECT_CODES {
+				log.Print("inside loop")
 				if code == resp.StatusCode {
 					location, err := resp.Location()
 					check_error(err)
