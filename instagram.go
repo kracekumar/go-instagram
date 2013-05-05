@@ -50,8 +50,6 @@ func (i Instagram) Authenticate(redirect_uri, scope string) *http.Response {
 	//first step: Direct user to Instagram authorization URL
 	instagram_url, err := url.Parse(AUTHORIZATION_URL)
 	check_error(err)
-	q := instagram_url.Query()
-	// Add clientid, redirect_uri, response_type=code as request paramateres
 	var resp *http.Response
 	if scope != "" {
 		resp, err = i.client.PostForm(u.String(), url.Values{"client_id": {i.ClientId}, "redirect_uri": {i.RedirectURI},
