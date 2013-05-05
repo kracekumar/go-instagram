@@ -1,0 +1,76 @@
+package instagram
+
+import (
+	//	"errors"
+	//	"io/ioutil"
+	"log"
+	"net/http"
+	"net/url"
+)
+
+//API docs: http://instagram.com/developer
+
+const (
+	AUTHORIZATION_URL = "https://api.instagram.com/oauth/authorize"
+	ACCESS_URL        = "https://api.instagram.com/oauth/access_token"
+)
+
+type Jar struct {
+	cookies []*http.Cookie
+}
+
+type Instagram struct {
+	ClientSecret string
+	ClientId     string
+	AccessToken  string
+	RedirectURI  string
+	client       *http.Client
+	jar          *Jar
+}
+
+func check_error(err error) {
+	if err != nil {
+		log.Fatal(err)
+		panic(err)
+	}
+}
+
+func NewInstagram(client_id, client_secret string) *Instagram {
+	i := &Instagram{}
+	i.ClientId = client_id
+	i.ClientSecret = client_secret
+	i.client = &http.Client{}
+	return i
+}
+
+func (i Instagram) Authenticate(redirect_uri, scope string) {
+	u, err := url.Parse(redirect_uri)
+	check_error(err)
+	i.RedirectURI = redirect_uri
+	//first step: Direct user to Instagram authorization URL
+	instagram_url, err := url.Parse(AUTHORIZATION_URL)
+	check_error(err)
+	q := instagram_url.Query()
+	// Add clientid, redirect_uri, response_type=code as request paramateres
+	q.Set("client_id", i.ClientId)
+	q.Set("redirect_uri", i.RedirectURI)
+	q.Set("response_type", "code")
+	q.Set("scope", scope)
+	u.RawQuery = q.Encode()
+	resp, err := i.client.Get(u.String())
+	check_error(err)
+	log.Println("Authentication")
+	log.Println(resp)
+}
+
+func (i Instagram) GetAccessToken(code string) *http.Response {
+	//Third step of oauth2.0: Do a Post
+	u, err := url.Parse(ACCESS_URL)
+	check_error(err)
+	resp, err := i.client.PostForm(u.String(), url.Values{"client_id": {i.ClientId}, "client_secret": {i.ClientSecret},
+		"redirect_uri": {i.RedirectURI}, "code": {code}, "grant_type": {"authorization_code"}})
+	check_error(err)
+	log.Println("Get Access Token")
+	log.Println(resp)
+	return resp
+}
