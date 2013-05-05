@@ -2,18 +2,19 @@ package main
 
 import (
 	"github.com/gorilla/mux"
-	"github.com/kracekumar/instagram"
+	"github.com/kracekumar/go-instagram"
 	"log"
 	"net/http"
 )
 
 func hello(w http.ResponseWriter, r *http.Request) {
-	i := NewInstagram(CLIENT_ID, CLIENT_SECRET)
+	i := instagram.NewInstagram(CLIENT_ID, CLIENT_SECRET)
 	i.Authenticate(REDIRECT_URL, "") //PAss empty scope
 }
 
 func RedirectHandler(w http.ResponseWriter, r *http.Request) {
-	log.Println(r)
+	log.Println(r.Form)
+	log.Println(r.FormValue("code"))
 }
 
 func main() {
