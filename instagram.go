@@ -52,14 +52,13 @@ func (i Instagram) Authenticate(redirect_uri, scope string) *http.Response {
 	check_error(err)
 	q := instagram_url.Query()
 	// Add clientid, redirect_uri, response_type=code as request paramateres
-	q.Set("client_id", i.ClientId)
-	q.Set("redirect_uri", i.RedirectURI)
-	q.Set("response_type", "code")
 	if scope != "" {
-		q.Set("scope", scope)
+		resp, err := i.client.PostForm(u.String(), url.Values{"client_id": {i.ClientId}, "redirect_uri": {i.RedirectURI},
+			"response_type": "code", "scope": {scope}})
+	} else {
+		resp, err := i.client.PostForm(u.String(), url.Values{"client_id": {i.ClientId}, "redirect_uri": {i.RedirectURI},
+			"response_type": "code"})
 	}
-	u.RawQuery = q.Encode()
-	resp, err := i.client.PostForm(u.String())
 	check_error(err)
 	return resp
 }
