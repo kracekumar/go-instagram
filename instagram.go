@@ -43,7 +43,7 @@ func NewInstagram(client_id, client_secret string) *Instagram {
 	return i
 }
 
-func (i Instagram) Authenticate(redirect_uri, scope string) *http.Response {
+func (i Instagram) Authenticate(redirect_uri, scope string) {
 	u, err := url.Parse(redirect_uri)
 	check_error(err)
 	i.RedirectURI = redirect_uri
@@ -61,7 +61,6 @@ func (i Instagram) Authenticate(redirect_uri, scope string) *http.Response {
 	u.RawQuery = q.Encode()
 	resp, err := i.client.Get(u.String())
 	check_error(err)
-	return resp
 }
 
 func (i Instagram) GetAccessToken(code string) *http.Response {
